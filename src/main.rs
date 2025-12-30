@@ -86,7 +86,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                             state = States::ObtainingDropDieType;
                         }
                         _ => {
-                            return Err(format!("Unexpected character encountered: {}", character).into());
+                            println!("{}", help_message);
+                            return Ok(());
                         }
                     }
                 }
@@ -109,7 +110,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                             continue;
                         }
                         _ => {
-                            return Err(format!("Unexpected character encountered: {}", character).into());
+                            println!("{}", help_message);
+                            return Ok(());
                         }
                     }
                 }
@@ -126,7 +128,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         state = States::ObtainingDropDieNum;
                     }
                     _ => {
-                        return Err(format!("Unexpected character encountered: {}", character).into());
+                        println!("{}", help_message);
+                        return Ok(());
                     }
                 }
             }
@@ -169,7 +172,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         state = States::ObtainingNumberOfDice;
                     }
                     _ => {
-                        return Err(format!("Unexpected character encountered: {}", character).into());
+                        println!("{}", help_message);
+                        return Ok(());
                     }
                 }
             }
