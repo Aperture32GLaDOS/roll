@@ -38,10 +38,20 @@ enum DropDie {
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let matches = command!().arg(Arg::new("dice").num_args(1..).help("The dice to be rolled - syntax is NdN, and many dice may be summed or subtracted.\nIt is also possible to drop the N lowest or highest results, i.e. with 2d20dl1 or 2d20dh1. The dropped dice will be marked in \x1b[0;91mred\x1b[0m")).get_matches();
+    let mut command = command!().arg(Arg::new("dice").num_args(1..).help("The dice to be rolled - syntax is NdN, and many dice may be summed or subtracted.\nIt is also possible to drop the N lowest or highest results, i.e. with 2d20dl1 or 2d20dh1. The dropped dice will be marked in \x1b[0;91mred\x1b[0m"));
+    command.build();
+    let help_message = command.render_long_help();
+    let matches = command.get_matches();
     let mut rng = rand::rng();
     // Use a finite state machine approach to consume the input
-    let input = matches.get_many::<String>("dice").unwrap().fold(String::new(), |v, x| v + " " + x);
+    let input;
+    if let Some(matches_found) = matches.get_many::<String>("dice") {
+        input = matches_found.fold(String::new(), |v, x| v + " " + x);
+    }
+    else {
+        println!("{}", help_message);
+        return Ok(());
+    }
     let mut state: States = States::ObtainingNumberOfDice;
     let mut rolls: Vec<Roll> = Vec::new();
     let mut new_roll = Roll::new();
