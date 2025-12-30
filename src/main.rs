@@ -204,7 +204,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                             continue;
                         }
                         roll.results.sort_by_key(|n| *n);
-                        if roll.num_rolls >= 1 {
+                        if roll.num_rolls > 1 {
                             output.push('('); 
                             for (result_index, result) in roll.results.iter().enumerate() {
                                 if result_index > 0 {
@@ -225,21 +225,25 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                         }
                         roll.results.sort_by_key(|n| *n);
                         roll.results.reverse();
-                        for (result_index, result) in roll.results.iter().enumerate() {
-                            if result_index > 0 {
-                                output += " + "
+                        if roll.num_rolls > 1 {
+                            output.push('('); 
+                            for (result_index, result) in roll.results.iter().enumerate() {
+                                if result_index > 0 {
+                                    output += " + "
+                                }
+                                if result_index < *x {
+                                    output += "\x1b[0;91mX\x1b[0m";
+                                }
+                                output += &result.to_string();
                             }
-                            if result_index < *x {
-                                output += "\x1b[0;91mX\x1b[0m";
-                            }
-                            output += &result.to_string();
+                            output.push(')');
                         }
                         roll.results.drain(0..*x);
                     }
                 }
             }
             None => {
-                if roll.num_rolls >= 1 {
+                if roll.num_rolls > 1 {
                     output.push('('); 
                     for (result_index, result) in roll.results.iter().enumerate() {
                         if result_index > 0 {
