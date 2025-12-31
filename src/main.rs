@@ -21,6 +21,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
     let skip_dropped = matches.get_flag("skip-dropped");
     let short_output = matches.get_flag("short-output");
-    println!("{}", consume_input_to_output(input, help_message, skip_dropped, short_output, true)?);
+    println!("{}", consume_input_to_output(&input, &help_message, skip_dropped, short_output, true)?);
     Ok(())
 }
