@@ -1,4 +1,4 @@
-use rand::{rngs::ThreadRng, Rng};
+use rand::{distr::Uniform, rngs::ThreadRng, Rng};
 #[cfg(feature = "wasm")]
 use wasm_bindgen::prelude::*;
 
@@ -46,8 +46,9 @@ pub fn add_to_total_and_output(index: usize, roll: &mut Roll, total: &mut i64, o
         return Ok(());
     }
     roll.results.reserve(roll.num_rolls);
+    let distribution = Uniform::new_inclusive(1, roll.dice_sides)?;
     for _ in 0..roll.num_rolls {
-        roll.results.push(rng.random_range(1..=roll.dice_sides).into())
+        roll.results.push(rng.sample(distribution).into())
     }
     if index > 0 {
         match roll.multiplier {
@@ -160,8 +161,9 @@ pub fn add_to_total(roll: &mut Roll, total: &mut i64, rng: &mut ThreadRng) -> Re
         return Ok(());
     }
     roll.results.reserve(roll.num_rolls);
+    let distribution = Uniform::new_inclusive(1, roll.dice_sides)?;
     for _ in 0..roll.num_rolls {
-        roll.results.push(rng.random_range(1..=roll.dice_sides).into())
+        roll.results.push(rng.sample(distribution).into())
     }
     // If we are dropping, then...
     match &roll.drop_die {
