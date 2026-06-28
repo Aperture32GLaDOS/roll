@@ -1,4 +1,4 @@
-use rand::{distr::Uniform, rngs::ThreadRng, Rng};
+use rand::{distr::Uniform, rngs::ThreadRng, RngExt};
 #[cfg(feature = "wasm")]
 use wasm_bindgen::prelude::*;
 
@@ -428,7 +428,7 @@ pub fn consume_input_to_rolls(input: &String, help_message: &String) -> Result<V
 }
 
 pub fn consume_input_to_output(input: &String, help_message: &String, skip_dropped: bool, short_output: bool, colour: bool) -> Result<String, Box<dyn std::error::Error>> {
-    let mut rolls = consume_input_to_rolls(&input, &help_message)?;
+    let mut rolls = consume_input_to_rolls(&input.to_lowercase(), &help_message)?;
     let mut rng = rand::rng();
     let mut running_total: i64 = 0;
     // And then we build the output
@@ -454,7 +454,7 @@ pub fn consume_input_to_output(input: &String, help_message: &String, skip_dropp
 #[cfg_attr(feature = "wasm", wasm_bindgen)]
 // No error output in WASM
 pub fn consume_input_to_output_without_error(input: String, help_message: String, skip_dropped: bool, short_output: bool) -> String {
-    let output = consume_input_to_output(&input, &help_message, skip_dropped, short_output, false);
+    let output = consume_input_to_output(&input.to_lowercase(), &help_message, skip_dropped, short_output, false);
     match output {
         Ok(x) => {
             return x;
