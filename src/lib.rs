@@ -5,7 +5,7 @@ mod roll;
 use tree::{ASTInput, AST};
 
 pub fn consume_input_to_output(input: String, help_message: &String, skip_dropped: bool, short_output: bool, colour: bool) -> Result<String, Box<dyn std::error::Error>> {
-    let mut ast_input = ASTInput::from_string(input, help_message);
+    let mut ast_input = ASTInput::from_string(input, help_message)?;
     let mut ast = AST::consume_input(&mut ast_input)?;
     let mut rng = rand::rng();
     let running_total: i64;
