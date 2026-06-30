@@ -36,6 +36,9 @@ impl ASTInput {
                         let mut num_brackets: usize = 1;
                         let mut bracket_idx = result_idx;
                         while num_brackets > 0 {
+                            if bracket_idx == input.len() {
+                                return Err("Mismatched brackets".into());
+                            }
                             if input[bracket_idx] == ASTInput::Character(')') {
                                 num_brackets -= 1;
                             }
@@ -43,9 +46,6 @@ impl ASTInput {
                                 num_brackets += 1;
                             }
                             bracket_idx += 1;
-                            if bracket_idx > input.len() {
-                                return Err("Mismatched brackets".into());
-                            }
                         }
                         // Remove the brackets
                         input.remove(bracket_idx - 1);
